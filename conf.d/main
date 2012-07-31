@@ -1,0 +1,78 @@
+#!/bin/sh -ex
+
+LIB=/var/lib/moin
+SHARE=/usr/share/moin
+INSTANCE=/var/www/moin/mywiki
+
+MOINUSER=admin
+MOINPASS=turnkey
+
+# configure moinmoin instance
+mkdir -p $INSTANCE
+cp -R $SHARE/data $INSTANCE
+cp -R $SHARE/underlay $INSTANCE
+chown -R www-data:www-data $INSTANCE
+chmod -R ug+rwX $INSTANCE
+chmod -R o-rwx $INSTANCE
+
+# create custom welcome page
+mkdir -p $INSTANCE/data/pages/FrontPage/revisions
+cat > $INSTANCE/data/pages/FrontPage/revisions/00000001 <<EOF
+##master-page:FrontPage
+#format wiki
+#language en
+#pragma section-numbers off
+= TurnKey MoinMoin =
+
+== Getting started ==
+ * Login as '''$MOINUSER''' and start your wiki!
+ * See SystemAdmin for administrative options
+ * Manage the appliance with the <<HttpHostLink("https", "12320", "Web based terminal shell")>> or <<HttpHostLink("https", "12321", "Web management interface (webmin)")>>
+ * Refer to the [[http://www.turnkeylinux.org/moinmoin|TurnKey MoinMoin release notes]]
+ * Get acquainted with MoinMoin by browsing through the WikiCourse and the HelpIndex
+EOF
+echo 00000001 > $INSTANCE/data/pages/FrontPage/current
+chown -R www-data:www-data $INSTANCE/data/pages
+
+# create admin user
+moin --config-dir=/etc/moin account create --name=$MOINUSER --alias=$MOINUSER --email=root@localhost --password=$MOINPASS
+chown -R www-data:www-data $INSTANCE/data/user
+
+# configure cache to comply with FHS
+rm -rf $INSTANCE/data/cache
+mkdir -p $LIB/cache
+chown -R www-data:www-data $LIB/cache
+chmod -R 755 $LIB
+
+# configure wordlist for spellchecker
+rm -f $INSTANCE/data/dict/words
+ln -s /usr/share/dict/words $INSTANCE/data/dict/words
+ln -s $LIB/cache $INSTANCE/data/cache  # workaround not adhering cache_dir
+
+# install fckeditor
+rm -rf $SHARE/htdocs/applets/FCKeditor
+tar -zxf /usr/local/src/FCKeditor_*.tar.gz -C $SHARE/htdocs/applets/
+mv $SHARE/htdocs/applets/fckeditor $SHARE/htdocs/applets/FCKeditor
+rm -f /usr/local/src/FCKeditor_*.tar.gz
+
+# patch fckeditor to not display turnkey-credit
+cat >> $SHARE/htdocs/applets/FCKeditor/editor/skins/silver/fck_dialog.css<<EOF
+#turnkey-credit {
+    display: none;
+}
+EOF
+
+# configure apache
+a2dissite default
+ln -s /etc/moin/apache.conf /etc/apache2/sites-available/moin
+a2ensite moin
+
+# install language settings / help pages
+/etc/init.d/apache2 start
+CURL="curl -c /tmp/cookie -b /tmp/cookie -A mozilla/5.0"
+URL=http://127.0.0.1
+$CURL -d "action=login&name=$MOINUSER&password=$MOINPASS&login=Login" $URL/FrontPage
+$CURL "$URL/LanguageSetup?action=language_setup&target=English--all_pages.zip&language=English"
+rm /tmp/cookie
+/etc/init.d/apache2 stop
+
