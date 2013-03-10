@@ -62,6 +62,13 @@ cat >> $SHARE/htdocs/applets/FCKeditor/editor/skins/silver/fck_dialog.css<<EOF
 }
 EOF
 
+# set version in overlayed files
+VERSIONPY="/usr/share/pyshared/MoinMoin/version.py"
+VERSION=$(grep release_short $VERSIONPY | awk '{print $3}' | sed "s|'||g")
+
+sed -i "s|__VERSION__|$VERSION|g" /etc/moin/apache.conf
+sed -i "s|__VERSION__|$VERSION|g" /etc/moin/mywiki.py
+
 # configure apache
 a2dissite default
 ln -s /etc/moin/apache.conf /etc/apache2/sites-available/moin

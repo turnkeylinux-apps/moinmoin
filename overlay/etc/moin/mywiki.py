@@ -6,7 +6,7 @@ class Config(FarmConfig):
     sitename = u'MoinMoin'
     interwikiname = 'Moin'
     show_interwiki = False
-    logo_string = u'<img src="/moin_static192/common/moinmoin.png" alt="MoinMoin Logo">'
+    logo_string = u'<img src="/moin_static__VERSION__/common/moinmoin.png" alt="MoinMoin Logo">'
 
     page_front_page = u"FrontPage"
 
@@ -23,3 +23,4 @@ class Config(FarmConfig):
     editor_force = False
     editor_default = 'gui'
     editor_ui = 'freechoice'
+
