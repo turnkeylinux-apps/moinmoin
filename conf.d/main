@@ -49,14 +49,8 @@ rm -f $INSTANCE/data/dict/words
 ln -s /usr/share/dict/words $INSTANCE/data/dict/words
 ln -s $LIB/cache $INSTANCE/data/cache  # workaround not adhering cache_dir
 
-# install fckeditor
-rm -rf $SHARE/htdocs/applets/FCKeditor
-tar -zxf /usr/local/src/FCKeditor_*.tar.gz -C $SHARE/htdocs/applets/
-mv $SHARE/htdocs/applets/fckeditor $SHARE/htdocs/applets/FCKeditor
-rm -f /usr/local/src/FCKeditor_*.tar.gz
-
 # patch fckeditor to not display turnkey-credit
-cat >> $SHARE/htdocs/applets/FCKeditor/editor/skins/silver/fck_dialog.css<<EOF
+cat >> /usr/share/fckeditor/editor/skins/silver/fck_dialog.css<<EOF
 #turnkey-credit {
     display: none;
 }
