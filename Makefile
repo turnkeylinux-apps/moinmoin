@@ -1,4 +1,5 @@
 COMMON_CONF = postfix-local apache-credit apache-vhost
+COMMON_OVERLAYS = apache
 
 CREDIT_ANCHORTEXT = MoinMoin Appliance
 
