@@ -50,11 +50,11 @@ ln -s /usr/share/dict/words $INSTANCE/data/dict/words
 ln -s $LIB/cache $INSTANCE/data/cache  # workaround not adhering cache_dir
 
 # patch fckeditor to not display turnkey-credit
-cat >> /usr/share/fckeditor/editor/skins/silver/fck_dialog.css<<EOF
+#cat >> /usr/share/fckeditor/editor/skins/silver/fck_dialog.css<<EOF
 #turnkey-credit {
-    display: none;
-}
-EOF
+#    display: none;
+#}
+#EOF
 
 # set version in overlayed files
 VERSIONPY="/usr/share/pyshared/MoinMoin/version.py"
@@ -64,8 +64,8 @@ sed -i "s|__VERSION__|$VERSION|g" /etc/moin/apache.conf
 sed -i "s|__VERSION__|$VERSION|g" /etc/moin/mywiki.py
 
 # configure apache
-a2dissite default
-ln -s /etc/moin/apache.conf /etc/apache2/sites-available/moin
+a2dissite 000-default
+ln -s /etc/moin/apache.conf /etc/apache2/sites-available/moin.conf
 a2ensite moin
 
 # install language settings / help pages
