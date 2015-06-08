@@ -1,3 +1,16 @@
+turnkey-moinmoin-14.0 (1) turnkey; urgency=low
+
+  * Latest Debian Jessie package version of MoinMoin.
+ 
+  * Installed FckEditor from upstream source:
+
+      - No longer packaged in Debian Jessie.
+
+  * Note: Please refer to turnkey-core's changelog for changes common to all
+    appliances. Here we only describe changes specific to this appliance.
+
+ -- Jeremy Davis <jeremy@turnkeylinux.org>  Sat, 07 Jun 2015 18:17:25 +1000
+
 turnkey-moinmoin-13.0 (1) turnkey; urgency=low
 
   * Latest Debian Wheezy package version of MoinMoin.
