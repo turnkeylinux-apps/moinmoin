@@ -7,6 +7,12 @@ INSTANCE=/var/www/moin/mywiki
 MOINUSER=admin
 MOINPASS=turnkey
 
+
+# install Fckeditor to where MoinMoin expects it to be
+SRC=/usr/local/src
+cd /usr/share/
+unzip $SRC/FCKeditor_*
+
 # configure moinmoin instance
 mkdir -p $INSTANCE
 cp -R $SHARE/data $INSTANCE
@@ -51,21 +57,21 @@ ln -s $LIB/cache $INSTANCE/data/cache  # workaround not adhering cache_dir
 
 # patch fckeditor to not display turnkey-credit
 cat >> /usr/share/fckeditor/editor/skins/silver/fck_dialog.css<<EOF
-#turnkey-credit {
+turnkey-credit {
     display: none;
 }
 EOF
 
 # set version in overlayed files
-VERSIONPY="/usr/share/pyshared/MoinMoin/version.py"
+VERSIONPY="/usr/lib/python2.7/dist-packages/MoinMoin/version.py"
 VERSION=$(grep release_short $VERSIONPY | awk '{print $3}' | sed "s|'||g")
 
 sed -i "s|__VERSION__|$VERSION|g" /etc/moin/apache.conf
 sed -i "s|__VERSION__|$VERSION|g" /etc/moin/mywiki.py
 
 # configure apache
-a2dissite default
-ln -s /etc/moin/apache.conf /etc/apache2/sites-available/moin
+a2dissite 000-default
+ln -s /etc/moin/apache.conf /etc/apache2/sites-available/moin.conf
 a2ensite moin
 
 # install language settings / help pages
