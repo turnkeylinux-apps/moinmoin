@@ -7,6 +7,6 @@ dl() {
 
 # manual install and download of Fckeditor
 VERSION=2.6.11
-URL=http://downloads.sourceforge.net/project/fckeditor/FCKeditor/${VERSION}/FCKeditor_${VERSION}.zip"
+URL="http://downloads.sourceforge.net/project/fckeditor/FCKeditor/${VERSION}/FCKeditor_${VERSION}.zip"
 
 dl $URL /usr/local/src

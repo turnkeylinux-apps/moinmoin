@@ -57,7 +57,7 @@ ln -s $LIB/cache $INSTANCE/data/cache  # workaround not adhering cache_dir
 
 # patch fckeditor to not display turnkey-credit
 cat >> /usr/share/fckeditor/editor/skins/silver/fck_dialog.css<<EOF
-turnkey-credit {
+#turnkey-credit {
     display: none;
 }
 EOF
