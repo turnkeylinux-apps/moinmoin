@@ -9,6 +9,7 @@ Option:
 
 import sys
 import getopt
+import inithooks_cache
 
 from dialog_wrapper import Dialog
 
@@ -64,6 +65,8 @@ def main():
             "MoinMoin Email",
             "Enter email address for the MoinMoin 'admin' account.",
             "admin@example.com")
+
+    inithooks_cache.write('APP_EMAIL', email)
 
     sys.path.append("/etc/moin")
     request = ScriptContext()
