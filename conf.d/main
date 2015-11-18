@@ -34,7 +34,7 @@ cat > $INSTANCE/data/pages/FrontPage/revisions/00000001 <<EOF
  * Login as '''$MOINUSER''' and start your wiki!
  * See SystemAdmin for administrative options
  * Manage the appliance with the <<HttpHostLink("https", "12320", "Web based terminal shell")>> or <<HttpHostLink("https", "12321", "Web management interface (webmin)")>>
- * Refer to the [[http://www.turnkeylinux.org/moinmoin|TurnKey MoinMoin release notes]]
+ * Refer to the [[https://www.turnkeylinux.org/moinmoin|TurnKey MoinMoin release notes]]
  * Get acquainted with MoinMoin by browsing through the WikiCourse and the HelpIndex
 EOF
 echo 00000001 > $INSTANCE/data/pages/FrontPage/current
