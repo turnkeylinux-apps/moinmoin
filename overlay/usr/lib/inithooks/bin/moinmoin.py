@@ -70,11 +70,12 @@ def main():
 
     sys.path.append("/etc/moin")
     request = ScriptContext()
+    cfg = request.cfg
 
     userid = user.getUserId(request, 'admin')
     u = user.User(request, userid)
     u.email = email
-    u.enc_password = user.encodePassword(password)
+    u.enc_password = user.encodePassword(cfg, password)
     u.save()
 
 if __name__ == "__main__":
