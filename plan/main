@@ -1,6 +1,6 @@
 #include <turnkey/base>
 
-apache2-mpm-worker
+apache2
 webmin-apache
 libapache2-mod-wsgi
 python-flup
