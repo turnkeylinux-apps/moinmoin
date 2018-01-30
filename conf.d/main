@@ -72,14 +72,15 @@ sed -i "s|__VERSION__|$VERSION|g" /etc/moin/mywiki.py
 # configure apache
 a2dissite 000-default
 ln -s /etc/moin/apache.conf /etc/apache2/sites-available/moin.conf
+a2enmod wsgi
 a2ensite moin
 
 # install language settings / help pages
-/etc/init.d/apache2 start
+service apache2 start
 CURL="curl -c /tmp/cookie -b /tmp/cookie -A mozilla/5.0"
 URL=http://127.0.0.1
 $CURL -d "action=login&name=$MOINUSER&password=$MOINPASS&login=Login" $URL/FrontPage
 $CURL "$URL/LanguageSetup?action=language_setup&target=English--all_pages.zip&language=English"
 rm /tmp/cookie
-/etc/init.d/apache2 stop
+service apache2 stop
 
