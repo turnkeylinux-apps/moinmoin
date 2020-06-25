@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """Set MoinMoin admin password and email
 
 Option:
@@ -12,33 +12,20 @@ import getopt
 import inithooks_cache
 
 from dialog_wrapper import Dialog
-
-# ugly workaround to suppress stderr moinmoin info/warning on import
-class DevNull:
-    def write(self, s):
-        pass
-
-stderr = sys.stderr
-sys.stderr = DevNull()
-
-from MoinMoin.web.contexts import ScriptContext
-from MoinMoin import user
-
-sys.stderr = stderr
-# -- end ugly workaround
+import subprocess
 
 def usage(s=None):
     if s:
-        print >> sys.stderr, "Error:", s
-    print >> sys.stderr, "Syntax: %s [options]" % sys.argv[0]
-    print >> sys.stderr, __doc__
+        print("Error:", s, file=sys.stderr)
+    print("Syntax: %s [options]" % sys.argv[0], file=sys.stderr)
+    print(__doc__, file=sys.stderr)
     sys.exit(1)
 
 def main():
     try:
         opts, args = getopt.gnu_getopt(sys.argv[1:], "h",
                                        ['help', 'pass=', 'email='])
-    except getopt.GetoptError, e:
+    except getopt.GetoptError as e:
         usage(e)
 
     password = ""
@@ -68,15 +55,11 @@ def main():
 
     inithooks_cache.write('APP_EMAIL', email)
 
-    sys.path.append("/etc/moin")
-    request = ScriptContext()
-    cfg = request.cfg
-
-    userid = user.getUserId(request, 'admin')
-    u = user.User(request, userid)
-    u.email = email
-    u.enc_password = user.encodePassword(cfg, password)
-    u.save()
+    # the stderr=DEVNULL is to suppress some warnings, however when debugging it
+    # may be preferable to remove this.
+    subprocess.run(
+            ['python2', '/usr/lib/inithooks/bin/moinmoin_util.py', password, email],
+            check=True, stderr=subprocess.DEVNULL)
 
 if __name__ == "__main__":
     main()
