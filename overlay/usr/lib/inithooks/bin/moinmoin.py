@@ -9,10 +9,11 @@ Option:
 
 import sys
 import getopt
-import inithooks_cache
-
-from dialog_wrapper import Dialog
 import subprocess
+
+import inithooks_cache
+from dialog_wrapper import Dialog
+
 
 def usage(s=None):
     if s:
@@ -20,6 +21,7 @@ def usage(s=None):
     print("Syntax: %s [options]" % sys.argv[0], file=sys.stderr)
     print(__doc__, file=sys.stderr)
     sys.exit(1)
+
 
 def main():
     try:
@@ -55,12 +57,13 @@ def main():
 
     inithooks_cache.write('APP_EMAIL', email)
 
-    # the stderr=DEVNULL is to suppress some warnings, however when debugging it
-    # may be preferable to remove this.
+    # the stderr=DEVNULL is to suppress some warnings, however when debugging
+    # it may be preferable to remove this.
     subprocess.run(
-            ['python2', '/usr/lib/inithooks/bin/moinmoin_util.py', password, email],
+            ['python2', '/usr/lib/inithooks/bin/moinmoin_util.py',
+             password, email],
             check=True, stderr=subprocess.DEVNULL)
+
 
 if __name__ == "__main__":
     main()
-
