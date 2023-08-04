@@ -2,7 +2,7 @@
 
 apache2
 webmin-apache
-libapache2-mod-wsgi-py3
+libapache2-mod-wsgi
 python-flup
 
 python-moinmoin
